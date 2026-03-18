@@ -76,15 +76,15 @@ const inputStyle = {
   borderRadius: 6, color: 'var(--txt)',
   fontSize: 15, padding: '10px 12px', width: '100%', outline: 'none'
 };
-
 function Input({ label, ...props }) {
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: 5, flex: 1 }}>
       <label style={{ fontSize: 11, fontWeight: 600, color: 'var(--txt3)', textTransform: 'uppercase', letterSpacing: 0.5 }}>{label}</label>
-      <input style={inputStyle} {...props} />
+      <input style={inputStyle} autoComplete="off" autoCorrect="off" autoCapitalize="off" spellCheck="false" {...props} />
     </div>
   );
 }
+
 
 function Select({ label, options, ...props }) {
   return (
@@ -287,7 +287,16 @@ export default function Home() {
         setBatch(q => [...q, { ...card, id: Date.now() + Math.random(), cost: '', market: '', target: '', floor: '', status: 'inventory', confidence: 'medium', grade: 'Raw', date: new Date().toISOString().split('T')[0] }]);
         setBatchLoading(false);
       } else {
-        setForm(f => ({ ...f, name: card.name || '', year: card.year || '', set: card.set || '', parallel: card.parallel || '', cardNum: card.cardNum || '', sport: card.sport || 'Football', notes: card.notes || '' }));
+        setForm(f => ({
+  ...f,
+  name: card.name || card.player || card.playerName || '',
+  year: card.year || card.cardYear || '',
+  set: card.set || card.setName || card.brand || '',
+  parallel: card.parallel || card.variant || card.insert || '',
+  cardNum: card.cardNum || card.number || card.cardNumber || '',
+  sport: card.sport || 'Football',
+  notes: card.notes || ''
+})); 
         setAiLoading(false);
         setAiMsg('✓ Card identified — review details and add pricing below');
       }
